@@ -106,7 +106,7 @@ export class ShopcartComponent implements OnInit {
     }
 
     private goToProducts() {
-        this.router.navigate(['Basic/Product/Index']);
+        this.router.navigate(['Product/Index']);
     }
 
     private _getState(store: Store<IOrder>) {
