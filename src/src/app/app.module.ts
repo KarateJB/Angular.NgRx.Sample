@@ -7,6 +7,7 @@ import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { OrderService } from './service/order.service';
 import { ProductService } from './service/product.service';
@@ -46,6 +47,10 @@ let rootReducer: any = {
     HttpModule,
     ToastModule.forRoot(),
     StoreModule.provideStore(rootReducer),
+   StoreDevtoolsModule.instrumentOnlyWithExtension({
+      // maxAge: 2,
+      // monitor: shopcartReducer
+    }),
     EffectsModule.run(orderEffects),
     AppRouteModule
   ],

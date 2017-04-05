@@ -1,6 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
-import { AngularFire, FirebaseListObservable, FirebaseApp } from 'angularfire2';
 import { Product } from '../class/Product';
 import { ProductType } from '../class/ProductType';
 import { Utility } from '../class/Utility';
