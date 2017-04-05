@@ -16,7 +16,7 @@ declare var swal: any; //SweetAlert2 typings definition
 
 @Component({
     selector: 'product-toys',
-    templateUrl: '/app/component/Basic/Product/product-toys.component.html'
+    templateUrl: './prod-toy.component.html'
     //styleUrls: ['/app/component/Basic/Product/Product-index.component.css']
 })
 
@@ -51,7 +51,7 @@ export class ProdToyComponent implements OnInit {
 
     //Initialize books
     private initToys() {
-        this.productService.getToys().then(data => {
+        this.productService.getToys().subscribe(data => {
             this.toys = data;
 
             //Use shopping cart to update data

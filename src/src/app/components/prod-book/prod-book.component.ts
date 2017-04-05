@@ -14,7 +14,7 @@ import { ToastsManager, ToastOptions } from 'ng2-toastr/ng2-toastr';
 
 @Component({
     selector: 'product-books',
-    templateUrl: '/app/component/Basic/Product/product-books.component.html'
+    templateUrl: './prod-book.component.html'
     //styleUrls: ['/app/component/Basic/Product/Product-index.component.css']
 })
 
@@ -49,7 +49,7 @@ export class ProdBookComponent implements OnInit {
 
     //Initialize books
     private initBooks() {
-        this.productService.getBooks().then(data => {
+        this.productService.getBooks().subscribe(data => {
             this.books = data;
 
             //Use shopping cart to update data

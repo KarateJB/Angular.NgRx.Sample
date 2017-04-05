@@ -21,10 +21,6 @@ export class ProdIndexComponent implements OnInit {
     this.router.navigate(['Product/Index', 'Toys']);
   }
 
-  private goToMusic() {
-    this.router.navigate(['Product/Index', 'Music']);
-  }
-
   private goToShopcart() {
     this.router.navigate(['Product/Shopcart']);
   }

@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { AngularFire, FirebaseListObservable, FirebaseApp } from 'angularfire2';
 import { Product } from '../class/Product';
 import { ProductType } from '../class/ProductType';
@@ -41,27 +41,21 @@ export class ProductService {
 
   //Get books
   public getBooks() {
-    return new Promise<Product[]>(
-      resolve => {
-        let books = PRODUCTS.filter(x => x.Type == "Book");
-      });
+    return this.http.get("assets/api/products.json", this.httpOptions)
+      .map((res: Response) => res.json())
+      .map(data=>{
+        let filtered = data.filter(x=> x.Type == "Book");
+        return filtered;
+      })
   }
   //Get toys
   public getToys() {
-    return new Promise<Product[]>(
-      resolve => {
-        let toys = PRODUCTS.filter(x => x.Type == "Toy");
-        resolve(toys);
-      });
+    return this.http.get("assets/api/products.json", this.httpOptions)
+      .map((res: Response) => res.json())
+      .map(data=>{
+        let filtered = data.filter(x=> x.Type == "Toy");
+        return filtered;
+      })
   }
 
 }
-
-
-const PRODUCTS: Product[] =
-  [{ "Id": "1", "TypeId": "1", "Type": "Book", "Title": "Book 1", "Price": 400 },
-  { "Id": "2", "TypeId": "1", "Type": "Book", "Title": "Book 2", "Price": 250 },
-  { "Id": "3", "TypeId": "1", "Type": "Book", "Title": "Book 3", "Price": 650 },
-  { "Id": "4", "TypeId": "2", "Type": "Toy", "Title": "Doll", "Price": 1000 },
-  { "Id": "5", "TypeId": "2", "Type": "Toy", "Title": "Toy Train", "Price": 2200 },
-  { "Id": "6", "TypeId": "2", "Type": "Toy", "Title": "LEGO", "Price": 3000 }];

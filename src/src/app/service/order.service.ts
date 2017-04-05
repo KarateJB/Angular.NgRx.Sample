@@ -15,13 +15,9 @@ export class OrderService {
     }
 
     //Save new order
-    public save(order: Order): Observable<void> {
-
-        var promise = new Promise(
-            resolve => {
-                //...
-            })
-        return Observable.fromPromise(promise);
+    public save(order: Order): Observable<boolean> {
+        //TODO:Implement the save function here
+        return Observable.of(true);
     }
 
 

@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { Product } from '../../class/Product';
 import { ProductService } from '../../service/product.service';
-import { PUSH,PULL,CLEAR } from '../../service/shopcart.action';
+import { PUSH,PULL,CLEAR } from '../../ngrx/shopcart.action';
 import { IShopCart } from '../../interface/IShopCart';
 import { ShopCart } from '../../class/ShopCart';
 import { ShopItem } from '../../class/ShopItem';

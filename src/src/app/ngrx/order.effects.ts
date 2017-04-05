@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { ShopItem } from '../class/ShopItem';
 import { Order } from '../class/Order';
 import { SAVE, SAVED, CANCEL, CANCELLED, COMPLETE } from './order.action';
-import { OrderService } from '../component/Basic/Product/order.service';
+import { OrderService } from '../service/order.service';
 import { Utility } from '../class/utility';
 
 
