@@ -13,6 +13,10 @@ export class ProdIndexComponent implements OnInit {
   ngOnInit() {
   }
 
+   private goToCreate(){
+     this.router.navigate(['Product/Create']);
+   }
+
   private goToBooks() {
     this.router.navigate(['Product/Index', 'Books']);
   }
@@ -24,5 +28,7 @@ export class ProdIndexComponent implements OnInit {
   private goToShopcart() {
     this.router.navigate(['Product/Shopcart']);
   }
+
+
 
 }

@@ -4,6 +4,7 @@ import { ShopcartComponent } from './components/shopcart/shopcart.component';
 import { ProdToyComponent } from './components/prod-toy/prod-toy.component';
 import { ProdBookComponent } from './components/prod-book/prod-book.component';
 import { ProdIndexComponent } from './components/prod-index/prod-index.component';
+import { ProdCreateComponent } from './components/prod-create/prod-create.component';
 
 const routes: Routes = [
   {
@@ -14,7 +15,7 @@ const routes: Routes = [
     ]
   },
   { path: 'Product/Shopcart', component: ShopcartComponent },
-
+  { path: 'Product/Create', component: ProdCreateComponent },
   { path: '', redirectTo: 'Product/Index', pathMatch: 'full' }
 ];
 

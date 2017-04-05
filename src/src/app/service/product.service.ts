@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { Injectable, Inject } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Product } from '../class/Product';
@@ -55,6 +56,10 @@ export class ProductService {
         let filtered = data.filter(x=> x.Type == "Toy");
         return filtered;
       })
+  }
+
+  public create(prod:Product){
+   return Observable.of(true);
   }
 
 }

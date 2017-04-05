@@ -18,6 +18,7 @@ import { ProdBookComponent } from './components/prod-book/prod-book.component';
 import { ProdToyComponent } from './components/prod-toy/prod-toy.component';
 import { ProdBookingComponent } from './components/prod-booking/prod-booking.component';
 import { ShopcartComponent } from './components/shopcart/shopcart.component';
+import { ProdCreateComponent } from "app/components/prod-create/prod-create.component";
 
 import { ToastConfig } from './class/toastr.config';
 import { ToastModule, ToastOptions } from "ng2-toastr/ng2-toastr";
@@ -39,7 +40,8 @@ let rootReducer: any = {
     ProdBookComponent,
     ProdToyComponent,
     ProdBookingComponent,
-    ShopcartComponent
+    ShopcartComponent,
+    ProdCreateComponent
   ],
   imports: [
     BrowserModule,
