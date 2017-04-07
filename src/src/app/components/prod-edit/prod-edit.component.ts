@@ -1,55 +1,49 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {ProductService} from '../../service/product.service';
 import {Product} from '../../class/Product';
 import {ProductType} from '../../class/ProductType';
-import { ProdTypeEnum } from '../../enum/ProdTypeEnum';
-
 
 declare var swal: any; //SweetAlert2 typings definition
 
 @Component({
-    selector: 'prod-create',
+    selector: 'prod-edit',
     providers: [ProductService],
-    templateUrl: './prod-create.component.html'
+    templateUrl: './prod-edit.component.html'
 })
 
-export class ProdCreateComponent implements OnInit {
+export class ProdEditComponent implements OnInit {
     title: string;
     private prod: Product;
-    private prodHint: string;
     private selectedProdType: ProductType;
     private prodTypes: ProductType[];
 
     constructor(
         private router: Router,
+        private route: ActivatedRoute,
         private prodService: ProductService
     ) {
-        this.title = "Products - Create";
-        this.prodHint = "";
+        this.title = "Products - Edit";
         this.prod = new Product();
         this.prodTypes = this.prodService.getProductTypes();
     }
 
     ngOnInit() {
+        this.route.params.subscribe(params => {
+            let prodId = params['id'];
 
-    }
-    //Change Selected Product type callback
-    private changeSelectedType(event: any) {
+            this.prodService.get(prodId).then(
+                data => {
+                    this.prod = data;
+                    this.prodTypes.forEach(type => {
+                        if (type.id == this.prod.TypeId) {
+                            console.log('matched type is ' + type.name);
+                            this.selectedProdType = type;
+                        }
+                    })
 
-
-        switch (event.id)
-        {
-            case ProdTypeEnum.Book.toString():
-                this.prodHint="Enter a book's title.."
-                break;
-            case ProdTypeEnum.Toy.toString():
-                this.prodHint = "Enter a toy's name.."
-                break;
-            default:
-                this.prodHint = "";
-                break;
-        }
+                });
+        });
     }
 
     //Save!
@@ -58,17 +52,16 @@ export class ProdCreateComponent implements OnInit {
         this.prod.TypeId = this.selectedProdType.id;
         this.prod.Type = this.selectedProdType.name;
 
-        this.prodService.create(this.prod).then(
+        this.prodService.update(this.prod).then(
             () => {
 
-                var rt = this.router;
                 swal(
                     'Success!',
                     'The data has been saved.',
                     'success'
                 ).then(function () {
                     //Return to Index
-                    rt.navigate(['Basic/Product/Index']);
+                    //rt.navigate(['Basic/Product/Index']);
                 });
 
             });
@@ -77,7 +70,7 @@ export class ProdCreateComponent implements OnInit {
 
     //Back to list (Show list)
     private backToList() {
-        this.router.navigate(['Product/Index']);
+        this.router.navigate(['Basic/Product/Index']);
     }
 }
 

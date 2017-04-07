@@ -51,7 +51,7 @@ export class ProdToyComponent implements OnInit {
 
     //Initialize books
     private initToys() {
-        this.productService.getToys().subscribe(data => {
+        this.productService.getToys().then(data => {
             this.toys = data;
 
             //Use shopping cart to update data

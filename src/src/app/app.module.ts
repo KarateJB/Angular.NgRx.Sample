@@ -18,14 +18,20 @@ import { ProdBookComponent } from './components/prod-book/prod-book.component';
 import { ProdToyComponent } from './components/prod-toy/prod-toy.component';
 import { ProdBookingComponent } from './components/prod-booking/prod-booking.component';
 import { ShopcartComponent } from './components/shopcart/shopcart.component';
-import { ProdCreateComponent } from "app/components/prod-create/prod-create.component";
+import { ProdCreateComponent } from "./components/prod-create/prod-create.component";
+import { ProdEditComponent } from './components/prod-edit/prod-edit.component';
 
 import { ToastConfig } from './class/toastr.config';
 import { ToastModule, ToastOptions } from "ng2-toastr/ng2-toastr";
 
+import { AngularFireModule } from 'angularfire2';
+import { FirebaseConfig } from './class/FirebaseConfig';
+import { FirebaseConfigProd } from './class/FirebaseConfig.prod';
+
 import { shopcartReducer } from './ngrx/shopcart.action';
 import { orderReducer } from './ngrx/order.action';
 import { orderEffects } from './ngrx/order.effects';
+import { LoginComponent } from './components/login/login.component';
 
 let rootReducer: any = {
     shopcart: shopcartReducer,
@@ -41,19 +47,19 @@ let rootReducer: any = {
     ProdToyComponent,
     ProdBookingComponent,
     ShopcartComponent,
-    ProdCreateComponent
+    ProdCreateComponent,
+    ProdEditComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     ToastModule.forRoot(),
+    AngularFireModule.initializeApp(FirebaseConfigProd.Get()),
     StoreModule.provideStore(rootReducer),
-   StoreDevtoolsModule.instrumentOnlyWithExtension({
-      // maxAge: 2,
-      // monitor: shopcartReducer
-    }),
     EffectsModule.run(orderEffects),
+    StoreDevtoolsModule.instrumentOnlyWithExtension(),
     AppRouteModule
   ],
   providers: [

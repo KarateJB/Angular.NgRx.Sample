@@ -49,7 +49,7 @@ export class ProdBookComponent implements OnInit {
 
     //Initialize books
     private initBooks() {
-        this.productService.getBooks().subscribe(data => {
+        this.productService.getBooks().then(data => {
             this.books = data;
 
             //Use shopping cart to update data

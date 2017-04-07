@@ -58,6 +58,19 @@ gulp.task('copy-jquery', function () {
   }).pipe(gulp.dest(rootPath.packageLib + '/jquery/'));
 });
 
+//angularfire2
+gulp.task('copy-angularfire2', function () {
+    return gulp.src(rootPath.nmSrc + "/angularfire2/bundles/angularfire2.umd.js", {
+        base: rootPath.nmSrc + '/angularfire2/bundles/'
+    }).pipe(gulp.dest(rootPath.packageLib + '/angularfire2/'));
+});
+//firebase
+gulp.task('copy-firebase', function () {
+    return gulp.src(rootPath.nmSrc + "/firebase/*.js", {
+        base: rootPath.nmSrc + '/firebase/'
+    }).pipe(gulp.dest(rootPath.packageLib + '/firebase/'));
+});
+
 //sweetalert2
 gulp.task('copy-sweetalert2', function () {
   return gulp.src(rootPath.nmSrc + "/sweetalert2/dist/sweetalert2*", {
@@ -117,6 +130,8 @@ gulp.task("default", [
 gulp.task("copy-all", [
   "copy-jquery",
   "copy-bootstrap",
+  "copy-angularfire2",
+  "copy-firebase",
   "copy-sweetalert2",
   "copy-fa-css",
   "copy-fa-fonts",
