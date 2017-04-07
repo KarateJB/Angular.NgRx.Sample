@@ -25,7 +25,7 @@ import { ToastConfig } from './class/toastr.config';
 import { ToastModule, ToastOptions } from "ng2-toastr/ng2-toastr";
 
 import { AngularFireModule } from 'angularfire2';
-import { FirebaseConfig } from './class/FirebaseConfig';
+// import { FirebaseConfig } from './class/FirebaseConfig';
 import { FirebaseConfigProd } from './class/FirebaseConfig.prod';
 
 import { shopcartReducer } from './ngrx/shopcart.action';
