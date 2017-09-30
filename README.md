@@ -5,7 +5,7 @@ Sample codes of implementing [@ngrx/store](https://github.com/ngrx/store) and [@
 ## Before fork or clone the repository
 
 Notice that you have to create your own firebase database and update `src/app/class/FirebaseConfig.ts`
-A database sample is located at /firebase-export.json.
+A database sample is located at [/firebase-export.json](https://github.com/KarateJB/Angular.NgRx.Sample/blob/master/firebase-export.json).
 
 
 ## Run
