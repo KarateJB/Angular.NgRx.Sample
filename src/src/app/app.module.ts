@@ -8,10 +8,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-
 import { OrderService } from './service/order.service';
 import { ProductService } from './service/product.service';
-
 import { AppComponent } from './app.component';
 import { ProdIndexComponent } from './components/prod-index/prod-index.component';
 import { ProdBookComponent } from './components/prod-book/prod-book.component';
@@ -25,8 +23,9 @@ import { ToastConfig } from './class/toastr.config';
 import { ToastModule, ToastOptions } from "ng2-toastr/ng2-toastr";
 
 import { AngularFireModule } from 'angularfire2';
-// import { FirebaseConfig } from './class/FirebaseConfig';
-import { FirebaseConfigProd } from './class/FirebaseConfig.prod';
+// import { FirebaseConfigProd } from './class/FirebaseConfig.prod';
+import { FirebaseConfig } from './class/FirebaseConfig';
+
 
 import { shopcartReducer } from './ngrx/shopcart.action';
 import { orderReducer } from './ngrx/order.action';
@@ -56,7 +55,7 @@ let rootReducer: any = {
     FormsModule,
     HttpModule,
     ToastModule.forRoot(),
-    AngularFireModule.initializeApp(FirebaseConfigProd.Get()),
+    AngularFireModule.initializeApp(((new FirebaseConfig).config)),
     StoreModule.provideStore(rootReducer),
     EffectsModule.run(orderEffects),
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
