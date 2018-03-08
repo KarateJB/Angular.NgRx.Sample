@@ -3,7 +3,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Product } from '../class/Product';
 import { ProductType } from '../class/ProductType';
-import { Utility } from '../class/Utility';
+import { AppUtility } from '../class/AppUtility';
 import { EnumEx } from '../enum/EnumEx';
 import { ProdTypeEnum } from '../enum/ProdTypeEnum';
 import { Subject } from 'rxjs/Subject';
@@ -158,7 +158,7 @@ export class ProductService {
     //Create new product
     public create(prod: Product) {
         //Set UUID to id
-        prod.Id = Utility.generateUUID();
+        prod.Id = AppUtility.generateUUID();
 
         var getPromise = new Promise(
             resolve => {

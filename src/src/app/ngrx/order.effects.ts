@@ -5,7 +5,7 @@ import { ShopItem } from '../class/ShopItem';
 import { Order } from '../class/Order';
 import { SAVE, SAVED, CANCEL, CANCELLED, COMPLETE } from './order.action';
 import { OrderService } from '../service/order.service';
-import { Utility } from '../class/utility';
+import { AppUtility } from '../class/AppUtility';
 
 
 @Injectable()
@@ -23,7 +23,7 @@ export class orderEffects {
 
 
             let payload: Order = {
-                id: Utility.generateUUID(),
+                id: AppUtility.generateUUID(),
                 status: "Saved!!",
                 date: action.payload.date,
                 items: action.payload.items

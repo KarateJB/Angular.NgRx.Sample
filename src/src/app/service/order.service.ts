@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Order } from '../class/Order';
-import { Utility } from '../class/Utility';
+import { AppUtility } from '../class/Utility';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 

@@ -1,4 +1,4 @@
-export module Utility {
+export module AppUtility {
 
     //取得UUID
     export function generateUUID() {
