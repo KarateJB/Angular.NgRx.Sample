@@ -1,1 +1,40 @@
-<router-outlet></router-outlet>
+<div class="menuBtn" [@flyIn]="menuState" (click)="toggleMenu()">
+    <i class="blue fa fa-th-list fa-2x"></i>
+  </div>
+  <div class="menuBtnFake" [@flyInOut]="menuState">
+    <i class="blue fa fa-th-list fa-2x"></i>
+  </div>
+  
+  
+  <div class="topMenu" [@slideInOut]="menuState">
+    <!--<span class="text-center">{{title}} (by {{copyright}})</span>-->
+  
+    <ul>
+      <li>
+        <a class="nav-item nav-link" [routerLink]="['/Product/Index']">
+          <i class="fa fa-file-powerpoint-o"></i>Buy something
+        </a>
+      </li>
+      <li>
+          <a class="nav-item nav-link" [routerLink]="['/Orders']">
+            <i class="fa fa-file-powerpoint-o"></i>My orders
+          </a>
+        </li>
+      <li *ngIf="!isAuth">
+        <button class="btn btn-danger" [routerLink]="['/Login']">
+          <i class="fa fa-google-plus"></i>
+          <span>Login</span>
+        </button>
+      </li>
+      <li *ngIf="isAuth">
+        <button class="btn btn-danger" (click)="logout()">
+          <i class="fa fa-google-plus"></i>
+          <span *ngIf="fbService.isAuth">{{fbService.User.displayName}}</span>
+        </button>
+      </li>
+    </ul>
+  </div>
+  
+  
+  
+  <router-outlet></router-outlet>

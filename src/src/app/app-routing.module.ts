@@ -1,12 +1,13 @@
-import { ProdEditComponent } from './components/prod-edit/prod-edit.component';
-import { LoginComponent } from './components/login/login.component';
-import { NgModule, Component } from '@angular/core';
-import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { ShopcartComponent } from './components/shopcart/shopcart.component';
-import { ProdToyComponent } from './components/prod-toy/prod-toy.component';
-import { ProdBookComponent } from './components/prod-book/prod-book.component';
-import { ProdIndexComponent } from './components/prod-index/prod-index.component';
-import { ProdCreateComponent } from './components/prod-create/prod-create.component';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { LoginComponent } from './component/login/login.component';
+import { ProdIndexComponent } from './component/prod-index/prod-index.component';
+import { ProdBookComponent } from './component/prod-book/prod-book.component';
+import { ProdToyComponent } from './component/prod-toy/prod-toy.component';
+import { ShopcartComponent } from './component/shopcart/shopcart.component';
+import { ProdCreateComponent } from './component/prod-create/prod-create.component';
+import { ProdEditComponent } from './component/prod-edit/prod-edit.component';
+import { OrderComponent } from './component/order/order.component';
 
 const routes: Routes = [
   {path:'Login', component: LoginComponent},
@@ -20,14 +21,12 @@ const routes: Routes = [
   { path: 'Product/Shopcart', component: ShopcartComponent },
   { path: 'Product/Create', component: ProdCreateComponent },
   { path: 'Product/Edit/:id', component: ProdEditComponent },
-  { path: '', redirectTo: 'Login', pathMatch: 'full' }
-];
+  { path: 'Orders', component: OrderComponent },
+  {path:'', redirectTo: 'login', pathMatch: 'full'}
+]
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
-    enableTracing: true
-  })],
-  exports: [RouterModule],
-  providers: []
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
-export class AppRouteModule { }
+export class AppRoutingModule { }

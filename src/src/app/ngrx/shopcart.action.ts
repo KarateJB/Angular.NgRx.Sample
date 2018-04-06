@@ -1,14 +1,16 @@
+import { ShopCart } from './../class/ShopCart';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Action, ActionReducer } from '@ngrx/store';
 import { IShopCart } from '../interface/IShopCart';
-import { ShopCart } from '../class/ShopCart';
 import { ShopItem } from '../class/ShopItem';
+import { ShopcartAction } from '../class/ShopcartAction';
 
 export const PUSH = 'PUSH';
 export const PULL = 'PULL';
 export const CLEAR = 'CLEAR';
 
-export const shopcartReducer: ActionReducer<IShopCart> = (state: ShopCart = new ShopCart(), action: Action) => {
+// export function shopcartReducer(state: ShopCart = new ShopCart(), action: ShopcartAction) {
+export const shopcartReducer: ActionReducer<IShopCart> = (state: ShopCart = new ShopCart(), action: ShopcartAction) => {
     switch (action.type) {
         case PUSH:
             return pushToCart(state, action.payload);
@@ -28,19 +30,17 @@ export const shopcartReducer: ActionReducer<IShopCart> = (state: ShopCart = new 
 }
 
 
-function pushToCart(shopcart: ShopCart, payload: ShopItem) {
+function pushToCart(shopcart: ShopCart, payload: ShopItem):ShopCart {
     shopcart.cnt += 1;
     shopcart.sum += payload.price * 1;
     updateItems(shopcart, payload);
-    //console.log(shopcart.items);
     return shopcart;
 }
 
-function pullFromCart(shopcart: ShopCart, payload: ShopItem) {
+function pullFromCart(shopcart: ShopCart, payload: ShopItem): ShopCart {
     shopcart.cnt -= 1;
     shopcart.sum -= payload.price * 1;
     updateItems(shopcart, payload);
-    //console.log(shopcart.items);
     return shopcart;
 }
 

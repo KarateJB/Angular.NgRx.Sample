@@ -1,13 +1,14 @@
+import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Observable';
 import { Injectable, Inject } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { AngularFireDatabase } from 'angularfire2/database'
 import { Product } from '../class/Product';
 import { ProductType } from '../class/ProductType';
 import { AppUtility } from '../class/AppUtility';
 import { EnumEx } from '../enum/EnumEx';
 import { ProdTypeEnum } from '../enum/ProdTypeEnum';
 import { Subject } from 'rxjs/Subject';
-import { AngularFire } from "angularfire2";
 
 declare var swal: any; //SweetAlert2 typings definition
 
@@ -16,28 +17,32 @@ export class ProductService {
 
     private httpOptions: RequestOptions;
     constructor(
-        //@Inject(FirebaseApp) private firebaseApp: any,
-        private af: AngularFire) {
+        private af: AngularFireAuth,
+        private afDb: AngularFireDatabase) {
 
     }
 
     //Query data from firebase
-    private _queryProducts() {
+    private _queryProducts(): Observable<Product[]> {
 
-        this.af.auth.subscribe(
+        this.af.authState.subscribe(
             user => {
                 if (!user) {
                     swal("Error", "Please login ... ", "error");
                 }
             },
-            error => {}
+            error => { }
         );
 
-        return this.af.database.object('/Demo/products');
+        return this.afDb.list<Product>('/Demo/products').valueChanges();
+        // return this.afDb.list<Product>('/Demo/products').snapshotChanges().map(changes => {
+        //     return changes.map(c => ({ 
+        //         key: c.payload.key,...c.payload.val() }));
+        //   });
     }
 
     //Get Product types list
-    public getProductTypes() {
+    public getProductTypes(): ProductType[] {
         let prodTypes: ProductType[] = [];
 
         //Get name-value pairs from ProductTypeEnum
@@ -50,215 +55,43 @@ export class ProductService {
         });
 
         return prodTypes;
-
-        //return PRODUCT_TYPES;
     }
 
-
-
-
-
-    public getByKey(key: string) {
-        //let subject$ = new Subject();
-        //subject$.subscribe((key) => {
-        //    let target = this.af.database.object('/Demo/products/' + key);
-        //    target.take(1).subscribe(data => {
-        //        console.log(data);
-        //    })
-        //});
-        //subject$.next(key);
-
-        return new Promise<Product>(
-            resolve => {
-                this.af.database.object('/Demo/products/' + key).subscribe(data => {
-                    resolve(data);
-                })
-            });
+    public getByKey(key: string): Observable<Product> {
+        return this.afDb.object<Product>('/Demo/products/' + key).valueChanges().take(1).map(x => <Product>x);
     }
 
-    public get(id: string) {
-        return new Promise<Product>(
-            resolve => {
-                //From Firebase
-                this._queryProducts().subscribe(data => {
-                    if (data) {
-                        let prod = data.find(x => x.Id == id);
-                        resolve(prod);
-                    }
-                    else {
-                        resolve(null);
-                    }
-
-                })
-
-            });
+    public getById(id: string): Observable<Product> {
+        return this._queryProducts().map(arr => arr.filter(prod => prod.id === id)[0]);
     }
 
-    //Get books
-    public getBooks() {
-        return new Promise<Product[]>(
-            resolve => {
-
-                //Use local const data
-                //let books = PRODUCTS.filter(x => x.Type == "Book");
-
-                //From Firebase
-                this._queryProducts().subscribe(data => {
-                    if (data) {
-                        let books = data.filter(x => x.Type == "Book");
-                        resolve(books);
-                    }
-                    else {
-                        resolve([]);
-                    }
-
-                })
-
-            });
-    }
-    //Get toys
-    public getToys() {
-        return new Promise<Product[]>(
-            resolve => {
-                //let toys = PRODUCTS.filter(x => x.Type == "Toy");
-                //resolve(toys);
-
-                //From Firebase
-                this._queryProducts().subscribe(data => {
-                    if (data) {
-                        let toys = data.filter(x => x.Type == "Toy");
-                        resolve(toys);
-                    }
-                    else {
-                        resolve([]);
-                    }
-                });
-            });
-    }
-    //Get toys
-    public getMusic() {
-        return new Promise<Product[]>(
-            resolve => {
-                //let musices = PRODUCTS.filter(x => x.Type == "Music");
-                //resolve(musices);
-
-                //From Firebase
-                this._queryProducts().subscribe(data => {
-                    if (data) {
-                        let musices = data.filter(x => x.Type == "Music");
-                        resolve(musices);
-                    }
-                    else {
-                        resolve([]);
-                    }
-                });
-            });
+    //Get products by type: Toy, Book, Music
+    public getByType(type: string): Observable<Product[]> {
+        return this._queryProducts().map(arr => arr.filter(x => x.type == type));
     }
 
     //Create new product
     public create(prod: Product) {
         //Set UUID to id
-        prod.Id = AppUtility.generateUUID();
-
-        var getPromise = new Promise(
-            resolve => {
-                let itemObservable = this._queryProducts();
-                //console.log(itemObservable);
-                let current = null;
-                itemObservable.subscribe(value => {
-                    current = value;
-                    current.push(prod);
-                    resolve(current);
-                })
-            }).then((newValue) => {
-                //console.log(newValue);
-                let itemObservable = this._queryProducts();
-                itemObservable.update(newValue);
-            });
-
-        //Could also use the following codes to append a new object to database with specified key!
-        //var getPromise = new Promise(
-        //    resolve => {
-        //        let itemObservable = this.af.database.object('/Demo/products/' + prod.Id);
-        //        itemObservable.set(prod);
-        //        resolve();
-        //    });
-
-        return getPromise;
+        let item$ = this.afDb.object('/Demo/products/' + prod.id);
+        return item$.set(prod);
     }
 
     //Update a product
     public update(prod: Product) {
-
-        var getPromise = new Promise(
-            resolve => {
-                let itemObservable = this._queryProducts();
-                let current: Product[] = [];
-                itemObservable.subscribe(value => {
-                    current = value;
-                    for (let i = 0; i < current.length; i++) {
-                        let item = current[i];
-                        if (item.Id == prod.Id) {
-                            item.Price = prod.Price;
-                            item.Title = prod.Title;
-                            item.TypeId = prod.TypeId;
-                            item.Type = prod.Type;
-                        }
-                    }
-
-                    resolve(current);
-                })
-            }).then((newValue) => {
-                let itemObservable = this._queryProducts();
-                itemObservable.update(newValue);
-            });
-
-        return getPromise;
+        // let item$ = this.afDb.list('/Demo/products/' + prod.Id);
+        // return item$.update(prod.Id, prod);
+        let item$ = this.afDb.object('/Demo/products/' + prod.id);
+        return item$.update(prod);
     }
 
     //Remove all products
     public removeAll() {
-        var getPromise = new Promise(
-            resolve => {
-                let itemObservable = this._queryProducts();
-                itemObservable.remove();
-            })
-        return getPromise;
+        return this.afDb.object('/Demo/products').remove();
     }
 
     //Remove a product
-    public remove(prod: Product) {
-        var promise = new Promise(
-            resolve => {
-                let itemObservable = this._queryProducts();
-                let current: Product[] = [];
-                itemObservable.subscribe(value => {
-                    current = value;
-
-                    //Remove item
-                    for (let i = 0; i < current.length; i++) {
-                        let item = current[i];
-                        if (item.Id == prod.Id) {
-                            var index = current.indexOf(item);
-                            current.splice(index, 1);
-                        }
-                    }
-
-                    resolve(current);
-                })
-            }).then((newValue: Product[]) => {
-
-                let itemObservable = this._queryProducts();
-                let prods: Product[] = [];
-                newValue.forEach(item => {
-                    prods.push(item);
-                });
-
-                itemObservable.set(prods); //PS. Cannot use update() here.
-            });
-
-        return promise;
+    public remove(id: string) {
+        return this.afDb.object('/Demo/products/' + id).remove();
     }
-
-
 }

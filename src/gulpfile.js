@@ -5,6 +5,8 @@ Click here to learn more. http://go.microsoft.com/fwlink/?LinkId=518007
 "use strict";
 var gulp = require('gulp');
 var util = require('gulp-util');
+
+
 var rename = require('gulp-rename');
 
 var config = {
@@ -18,38 +20,36 @@ var rootPath = {
   nmSrc: "./node_modules/" //library source
 };
 
+
 var restUri = {
-  path_prod : rootPath.app + "/services/resturi.service.prod.ts",
-  path_dev : rootPath.app + "/services/resturi.service.dev.ts"
+  path_prod : rootPath.app + "/service/resturi.service.prod.ts",
+  path_dev : rootPath.app + "/service/resturi.service.dev.ts"
 }
 
 //Restful service uri
 //Command: > gulp build --production
-gulp.task('build-resturi-service', function () {
+// gulp.task('build-resturi-service', function () {
 
-  console.log(util.env.production);
+//   if (config.production==true) {
+//     return gulp.src(restUri.path_prod)
+//     .pipe(rename("resturi.service.ts"))
+//     .pipe(gulp.dest(rootPath.app + '/service/'));
+//   }
+//   else {
+//     return  gulp.src(restUri.path_dev)
+//     .pipe(rename("resturi.service.ts"))
+//     .pipe(gulp.dest(rootPath.app + '/service/'));
+//   }
 
-  if (config.production==true) {
-    return gulp.src(restUri.path_prod)
-    .pipe(rename("resturi.service.ts"))
-    .pipe(gulp.dest(rootPath.app + '/services/'));
-  }
-  else {
-    return  gulp.src(restUri.path_dev)
-    .pipe(rename("resturi.service.ts"))
-    .pipe(gulp.dest(rootPath.app + '/services/'));
-  }
-
-})
+// })
 
 
 //bootstrap
 gulp.task('copy-bootstrap', function () {
-  return gulp.src(rootPath.nmSrc + "/bootstrap/dist/**/bootstrap.min.*", {
-    base: rootPath.nmSrc + '/bootstrap/dist/'
+  return gulp.src(rootPath.nmSrc + "/bootstrap/dist/css/bootstrap.min.css", {
+    base: rootPath.nmSrc + '/bootstrap/dist/css/'
   }).pipe(gulp.dest(rootPath.packageLib + '/bootstrap/'));
 });
-
 
 //jquery
 gulp.task('copy-jquery', function () {
@@ -58,25 +58,23 @@ gulp.task('copy-jquery', function () {
   }).pipe(gulp.dest(rootPath.packageLib + '/jquery/'));
 });
 
-//angularfire2
-gulp.task('copy-angularfire2', function () {
-    return gulp.src(rootPath.nmSrc + "/angularfire2/bundles/angularfire2.umd.js", {
-        base: rootPath.nmSrc + '/angularfire2/bundles/'
-    }).pipe(gulp.dest(rootPath.packageLib + '/angularfire2/'));
-});
-//firebase
-gulp.task('copy-firebase', function () {
-    return gulp.src(rootPath.nmSrc + "/firebase/*.js", {
-        base: rootPath.nmSrc + '/firebase/'
-    }).pipe(gulp.dest(rootPath.packageLib + '/firebase/'));
-});
-
 //sweetalert2
 gulp.task('copy-sweetalert2', function () {
   return gulp.src(rootPath.nmSrc + "/sweetalert2/dist/sweetalert2*", {
     base: rootPath.nmSrc + '/sweetalert2/dist/'
   }).pipe(gulp.dest(rootPath.packageLib + '/sweetalert2/'));
 });
+
+//ng2-toastr
+gulp.task('copy-ng2-toastr', function () {
+  return gulp.src([
+    rootPath.nmSrc + "/ng2-toastr/bundles/ng2-toastr.min.css",
+    rootPath.nmSrc + "/ng2-toastr/bundles/ng2-toastr.min.js",
+  ], {
+      base: rootPath.nmSrc + '/ng2-toastr/bundles/'
+  }).pipe(gulp.dest(rootPath.packageLib + '/ng2-toastr/'));
+});
+
 
 //font-awesome
 gulp.task('copy-fa-css', function () {
@@ -91,31 +89,19 @@ gulp.task('copy-fa-fonts', function () {
     }).pipe(gulp.dest(rootPath.packageLib + '/font-awesome/css/'));
 });
 
-//ng2-toastr
-gulp.task('copy-ng2-toastr', function () {
-    return gulp.src([
-      rootPath.nmSrc + "/ng2-toastr/bundles/ng2-toastr.min.css",
-      rootPath.nmSrc + "/ng2-toastr/bundles/ng2-toastr.min.js",
-    ], {
-        base: rootPath.nmSrc + '/ng2-toastr/bundles/'
-    }).pipe(gulp.dest(rootPath.packageLib + '/ng2-toastr/'));
+//angularfire2
+gulp.task('copy-angularfire2', function () {
+    return gulp.src(rootPath.nmSrc + "/angularfire2/bundles/angularfire2.umd.js", {
+        base: rootPath.nmSrc + '/angularfire2/bundles/'
+    }).pipe(gulp.dest(rootPath.packageLib + '/angularfire2/'));
 });
 
-//ngrx
-gulp.task('copy-ngrx-core', function () {
-    return gulp.src(rootPath.nmSrc + "/@ngrx/core/bundles/core.min.umd.js")
-        .pipe(gulp.dest(rootPath.packageLib + '/ngrx/core/'));
+//firebase
+gulp.task('copy-firebase', function () {
+    return gulp.src(rootPath.nmSrc + "/firebase/*.js", {
+        base: rootPath.nmSrc + '/firebase/'
+    }).pipe(gulp.dest(rootPath.packageLib + '/firebase/'));
 });
-gulp.task('copy-ngrx-store', function () {
-    return gulp.src(rootPath.nmSrc + "/@ngrx/store/bundles/store.min.umd.js")
-        .pipe(gulp.dest(rootPath.packageLib + '/ngrx/store/'));
-});
-gulp.task('copy-ngrx-effects', function () {
-    return gulp.src(rootPath.nmSrc + "/@ngrx/effects/bundles/effects.min.umd.js")
-        .pipe(gulp.dest(rootPath.packageLib + '/ngrx/effects/'));
-});
-
-
 
 //Watch
 gulp.task('watch', function() {
@@ -128,19 +114,16 @@ gulp.task("default", [
 ])
 
 gulp.task("copy-all", [
-  "copy-jquery",
   "copy-bootstrap",
-  "copy-angularfire2",
-  "copy-firebase",
+  "copy-jquery",  
   "copy-sweetalert2",
+  "copy-ng2-toastr",
   "copy-fa-css",
   "copy-fa-fonts",
-  "copy-ng2-toastr",
-  "copy-ngrx-core",
-  "copy-ngrx-store",
-  "copy-ngrx-effects"
+  "copy-angularfire2",
+  "copy-firebase"
 ])
 
-gulp.task("build", [
-  "build-resturi-service"
-])
+// gulp.task("build", [
+//   "build-resturi-service"
+// ])
