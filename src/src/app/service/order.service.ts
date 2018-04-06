@@ -1,7 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Order } from '../class/Order';
-import { AppUtility } from '../class/Utility';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
@@ -18,9 +17,5 @@ export class OrderService {
         //TODO:Implement the save function here
         return Observable.of(true);
     }
-
-
-
-
 }
 

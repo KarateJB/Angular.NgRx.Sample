@@ -2,13 +2,12 @@ export class FirebaseConfig {
 
   get config(): any {
     return {
-      apiKey: "XXXXXXXXX",
-      authDomain: "fir-e11111.firebaseapp.com",
-      databaseURL: "https://fir-e11111.firebaseio.com",
-      storageBucket: "fir-e11111.appspot.com",
-      messagingSenderId: "499014936129"
+      apiKey: "AIzaSyCZzDE0KS0jj4WIW424-92w86lerFaLiKU",
+      authDomain: "fir-e1a22.firebaseapp.com",
+      databaseURL: "https://fir-e1a22.firebaseio.com",
+      projectId: "fir-e1a22",
+      storageBucket: "fir-e1a22.appspot.com",
+      messagingSenderId: "499014936125"
     };
   }
-
-
 }

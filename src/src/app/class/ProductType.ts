@@ -1,7 +1,5 @@
 //Product type
-import {IType} from '../interface/IType';
-
-export class ProductType implements IType{
+export class ProductType{
     id: string;
     name: string;
 }
