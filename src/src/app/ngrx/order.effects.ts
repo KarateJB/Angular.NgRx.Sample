@@ -23,18 +23,13 @@ export class orderEffects {
         .switchMap((action) => {
 
             let oa = <OrderAction>action;
-            let payload: Order = {
-                id: AppUtility.generateUUID(),
-                customer: oa.payload.customer,
-                status: SAVED,
-                date: oa.payload.date,
-                items: oa.payload.items
-            };
+            oa.payload.id = AppUtility.generateUUID();
+            oa.payload.status = SAVED;
 
             //Save the order to backend, database ...etc Or get something
-            let create$ = Observable.fromPromise(this.orderService.create(payload));
+            let create$ = Observable.fromPromise(this.orderService.create(oa.payload));
             return create$.delay(1000).switchMap(() => {
-                return Observable.of({ 'type': SAVED, 'payload': payload });
+                return Observable.of({ 'type': SAVED, 'payload': oa.payload });
             });
 
         });
@@ -43,9 +38,7 @@ export class orderEffects {
         .ofType(SAVED).delay(1000)
         .switchMap((action) => {
             let oa = <OrderAction>action;
-            oa.payload.status = "Complete";
+            oa.payload.status = COMPLETE;
             return Observable.of({ 'type': COMPLETE, 'payload': oa.payload });
         });
-
-
 }
